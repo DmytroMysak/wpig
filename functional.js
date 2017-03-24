@@ -17,8 +17,17 @@ const listLanguages = () => {
   process.exit();
 };
 const listNames = () => {
-  httpGet().then(names => console.log(names));
-  process.exit();
+  httpGet()
+      .then(names => {
+        const _names = names.voices.sort((a,b)=>(a.Language>b.Language)?1:((b.Language>a.Language)?-1:0));
+        for (let i = 0; i < _names.length; ++i) {
+          if (i === 0 || _names[i].Language !== _names[i - 1].Language) {
+            console.log(`\nLanguage: ${_names[i].Language}`)
+          }
+          console.log(`\tName: ${_names[i].Name} Gender: ${_names[i].Gender}`);
+        }
+      })
+      .then(() => process.exit());
 };
 const repeat = (count) => {
   count = parseInt(count, 10);
