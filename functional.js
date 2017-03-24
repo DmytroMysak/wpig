@@ -2,32 +2,35 @@ const Translate = require('google-translate-api');
 const Rp = require('request-promise');
 const Data = require('./data');
 
-const httpGet = () => {
-  const options = {
-    uri: 'http://192.168.0.60:3005/voices',
-    json: true
-  };
-  return Rp(options);
-};
-const listLanguages = () => {
+const listTranslatedLanguages = () => {
   for (let key in Data.languages) {
     if (!Data.languages.hasOwnProperty(key)) continue;
     console.log(`${Data.languages[key]}: ${key}`);
   }
   process.exit();
 };
-const listNames = () => {
-  httpGet()
-      .then(names => {
-        const _names = names.voices.sort((a,b)=>(a.Language>b.Language)?1:((b.Language>a.Language)?-1:0));
-        for (let i = 0; i < _names.length; ++i) {
-          if (i === 0 || _names[i].Language !== _names[i - 1].Language) {
-            console.log(`\nLanguage: ${_names[i].Language}`)
-          }
-          console.log(`\tName: ${_names[i].Name} Gender: ${_names[i].Gender}`);
+const listLanguages = () => {
+  Rp({ uri: 'http://192.168.0.60:3005/voices', json: true })
+      .then(voices => {
+        console.log('Languages:');
+        for (let i = 0; i < voices.voices.length; ++i) {
+          console.log(voices.voices[i].Language);
         }
+        process.exit();
       })
-      .then(() => process.exit());
+};
+const listNames = () => {
+  Rp({ uri: 'http://192.168.0.60:3005/voices', json: true })
+      .then(voices => {
+        const names = voices.voices.sort((a,b)=>(a.Language>b.Language)?1:((b.Language>a.Language)?-1:0));
+        for (let i = 0; i < names.length; ++i) {
+          if (i === 0 || names[i].Language !== names[i - 1].Language) {
+            console.log(`\nLanguage: ${names[i].Language}`)
+          }
+          console.log(`\tName: ${names[i].Name} Gender: ${names[i].Gender}`);
+        }
+        process.exit();
+      })
 };
 const repeat = (count) => {
   count = parseInt(count, 10);
@@ -38,7 +41,7 @@ const repeat = (count) => {
   }
 };
 const translate = (language) => {
-  if (language === 'list') return listLanguages();
+  if (language === 'list') return listTranslatedLanguages();
   return Translate(Data.state.body.text, {to: language})
       .then(res => Data.state.body.text = res.text);
 };
