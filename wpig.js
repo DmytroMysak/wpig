@@ -1,7 +1,5 @@
 // version 0.4.2
 // TODO Зробити автопереклад
-// TODO Пофіксити баг для вибору мови
-// TODO ЛОГУВАННЯ
 'use strict';
 
 const ReadlineSync = require('readline-sync');
@@ -29,7 +27,7 @@ if (args.includes('-s')) {
   const start = args.indexOf('-s');
   let end = start + 1;
   let text = '';
-  while (!functional.has(args[end])) {
+  while (args[end] && !functional.has(args[end])) {
     text += args[end++] + ' ';
   }
   args.splice(start, end);
@@ -51,10 +49,10 @@ Promise.all(all)
     .then(() => Rp({ method: 'POST', uri: 'http://192.168.0.60:3005/say', body: Data.state.body, json: true }))
     .then(res => {
       console.log(res);
-      // fs.appendFile(
-      //       '~/.bashCommand/log',
-      //       `${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}: ${res}`,
-      //       (err) => { if (err)  throw err; }
-      //     )
+      fs.appendFile(
+            `${__dirname}/log`,
+            `${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}-->${Data.state.body.text};\n`,
+            (err) => { if (err)  throw err; }
+          )
     })
     .catch(err => error(err));
