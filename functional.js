@@ -50,7 +50,7 @@ const text = (text) => {
 };
 const language = (language) => {
   if (language === 'list') return listLanguages();
-  Data.state.body.language = `${language}-${language.toUpperCase()}`;
+  Data.state.body.language = language;
 };
 const name = (name) => {
   if (name === 'list') return listNames();

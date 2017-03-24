@@ -1,14 +1,14 @@
-// version 0.3.1
-// TODO Покращити вивід ім'я чувака
+// version 0.4.2
 // TODO Зробити автопереклад
 // TODO Пофіксити баг для вибору мови
-// TODO Логування
+// TODO ЛОГУВАННЯ
 'use strict';
 
 const ReadlineSync = require('readline-sync');
 const Rp = require('request-promise');
 const Data = require('./data');
 const functional = require('./functional').functional;
+const fs = require('fs');
 
 const httpPost = (body) => {
   const options = {
@@ -48,6 +48,13 @@ for (let i = 0; i < args.length; ++i) {
 }
 
 Promise.all(all)
-    .then(()=> httpPost(Data.state.body))
-    .then(res => console.log(res))
+    .then(() => Rp({ method: 'POST', uri: 'http://192.168.0.60:3005/say', body: Data.state.body, json: true }))
+    .then(res => {
+      console.log(res);
+      // fs.appendFile(
+      //       '~/.bashCommand/log',
+      //       `${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}: ${res}`,
+      //       (err) => { if (err)  throw err; }
+      //     )
+    })
     .catch(err => error(err));

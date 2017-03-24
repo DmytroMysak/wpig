@@ -2,13 +2,15 @@
 Little program to send a text to pig.
 
 # INSTALL
-<ul><i>Linux</i>
-    <li>install node if it doesn't exist</li>
+<ul><h2><i>Linux</i></h2>
+    <li>Install node if it doesn't exist</li>
     <li>Download or clone repository</li>
-    <li>unzip and rename to wpiFiles</li>
-    <li>move wpiFiles to location /home/{yourUser}/.bashCommand if it doesn`t exist create it</li>
-    <li>open terminal and enter:
+    <li>Unzip and rename to wpigFiles</li>
+    <li>Open terminal and enter:
         <ul>
+            <li>cd {place where is folder wpigFiles}</li>
+            <li>mkdir ~/.bashCommand</li>
+            <li>mv wpigFiles ~/.bashCommand</li>
             <li>cd ~/.bashCommand && touch wpig"</li>
             <li>echo "node ~/.bashCommand/wpigFiles/wpig.js \$@" > wpig</li>
             <li>sudo chmod +x wpig</li>
@@ -19,7 +21,7 @@ Little program to send a text to pig.
     <li>??????????</li>
     <li>Profit</li>
 </ul>
-<ul><i>Windows</i>
+<ul><h2><i>Windows</i></h2>
     <li>??????????</li>
     <li>??????????</li>
     <li>??????????</li>

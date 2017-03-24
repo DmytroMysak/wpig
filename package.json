@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "file-system": "^2.2.2",
     "google-translate-api": "^2.2.2",
     "readline-sync": "^1.4.7",
     "request": "^2.81.0",
