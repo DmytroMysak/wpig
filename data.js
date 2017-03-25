@@ -3,7 +3,9 @@ let state = {
     name: '',
     language: 'ru-RU',
     text: ''
-  }
+  },
+  say: 'http://192.168.0.60:3005/say',
+  voices: 'http://192.168.0.60:3005/voices'
 };
 
 let languages = {

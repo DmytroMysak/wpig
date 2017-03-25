@@ -1,4 +1,4 @@
-// version 0.4.2
+// version 0.4.3
 // TODO Зробити автопереклад
 'use strict';
 
@@ -8,15 +8,6 @@ const Data = require('./data');
 const functional = require('./functional').functional;
 const fs = require('fs');
 
-const httpPost = (body) => {
-  const options = {
-    method: 'POST',
-    uri: 'http://192.168.0.60:3005/say',
-    body: body,
-    json: true
-  };
-  return Rp(options);
-};
 const error = (msg) => {
   console.error(msg);
   process.exit();
@@ -30,12 +21,11 @@ if (args.includes('-s')) {
   while (args[end] && !functional.has(args[end])) {
     text += args[end++] + ' ';
   }
-  args.splice(start, end);
+  args.splice(start, end - start);
   args = ['-s', text, ...args];
 } else if (!args.includes('list')) {
   Data.state.body.text = ReadlineSync.question('Enter text: ');
 }
-
 const all = [];
 for (let i = 0; i < args.length; ++i) {
   if (functional.has(args[i])) {
@@ -46,8 +36,9 @@ for (let i = 0; i < args.length; ++i) {
 }
 
 Promise.all(all)
-    .then(() => Rp({ method: 'POST', uri: 'http://192.168.0.60:3005/say', body: Data.state.body, json: true }))
+    .then(res => (res.toString() === '-1') ? '-1' : Rp({ method: 'POST', uri: Data.state.say, body: Data.state.body, json: true }))
     .then(res => {
+      if (res.toString() === '-1') return;
       console.log(res);
       fs.appendFile(
             `${__dirname}/log`,
