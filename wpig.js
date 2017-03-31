@@ -36,7 +36,7 @@ for (let i = 0; i < args.length; ++i) {
 }
 
 Promise.all(all)
-    .then(res => (res.toString() === '-1') ? '-1' : Rp({ method: 'POST', uri: Data.state.say, body: Data.state.body, json: true }))
+    .then(res =>(res.toString()==='-1')?'-1':Rp({method:'POST',uri:Data.state.say,body:Data.state.body,json:true}))
     .then(res => {
       if (res.toString() === '-1') return;
       console.log(res);

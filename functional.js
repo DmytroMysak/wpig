@@ -10,22 +10,25 @@ const listTranslatedLanguages = () => {
   return -1;
 };
 const listLanguages = () => {
-  Rp({ uri: Data.state.voices, json: true })
+  return Rp({ uri: Data.state.voices, json: true })
       .then(voices => {
         console.log('Languages:');
-        for (let i = 0; i < voices.voices.length; ++i) {
-          console.log(voices.voices[i].Language);
+        let language = voices.Voices.filter((el,i,arr)=>arr.findIndex((t)=>t.LanguageCode===el.LanguageCode)===i);
+        language = language.sort((a,b)=>(a.LanguageCode>b.LanguageCode)?1:((b.LanguageCode>a.LanguageCode)?-1:0));
+        for (let i = 0; i < language.length; ++i) {
+          console.log(`${language[i].LanguageCode} - ${language[i].LanguageName}`);
         }
         return -1;
       })
 };
 const listNames = () => {
-  Rp({ uri: Data.state.voices, json: true })
+  return Rp({ uri: Data.state.voices, json: true })
       .then(voices => {
-        const names = voices.voices.sort((a,b)=>(a.Language>b.Language)?1:((b.Language>a.Language)?-1:0));
+        const names =
+            voices.Voices.sort((a,b)=>(a.LanguageCode>b.LanguageCode)?1:((b.LanguageCode>a.LanguageCode)?-1:0));
         for (let i = 0; i < names.length; ++i) {
-          if (i === 0 || names[i].Language !== names[i - 1].Language) {
-            console.log(`\nLanguage: ${names[i].Language}`)
+          if (i === 0 || names[i].LanguageName !== names[i - 1].LanguageName) {
+            console.log(`\nLanguage: ${names[i].LanguageName}`)
           }
           console.log(`\tName: ${names[i].Name} Gender: ${names[i].Gender}`);
         }
